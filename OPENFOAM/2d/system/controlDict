@@ -1,0 +1,113 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+
+
+application     pisoFoam; 
+
+startFrom       startTime;
+startTime       0;
+
+stopAt          endTime;
+endTime         122.2;      
+
+deltaT          0.001;      
+
+adjustTimeStep  yes;
+maxCo		0.6;
+maxDeltaT       0.001;
+
+
+writeControl    runTime;
+writeInterval   0.100;     
+
+purgeWrite      0;	
+writeFormat     ascii;
+writePrecision  6;	
+writeCompression off;	
+
+
+timeFormat	general;	
+timePrecision	6;		
+runTimeModifiable yes;		
+
+
+
+residualControl                      
+{
+    p               1e-6;            
+    U               1e-6;            
+    k               1e-6;  
+    epsilon         1e-6;   
+}
+
+
+functions
+{
+    
+    probes
+    {
+        type            probes;
+        libs            (sampling);
+	writeControl    timeStep;
+        writeInterval   100; 
+        
+        probeLocations  
+        (
+            (0.5  0.08  0.05)    
+            (1.0  0.08  0.05)    
+            (2.5  0.08  0.05)    
+            (0.5  0.5   0.05)    
+            (1.5  0.5   0.05)    
+            (2.5  0.5   0.05)    
+            (0.5  0.92  0.05)    
+            (1.5  0.92  0.05)    
+            (2.5  0.92  0.05)    
+            (2.9  0.96  0.05)    
+        );
+        
+        fields          (U p k epsilon);  
+    }
+    
+    
+    volAverage
+    {
+        type            fieldAverage;
+        libs            (fieldFunctionObjects);
+        
+        fields          
+        (
+            U
+            {
+                mean            on;
+                prime2Mean      off;
+                base            time;
+            }
+            p
+            {
+                mean            on;
+                prime2Mean      off;
+                base            time;
+            }
+        );
+        
+        writeControl    timeStep;
+        writeInterval   100;           
+    }
+    
+    
+    CourantNo
+    {
+        type            CourantNo;
+        libs            (fieldFunctionObjects);
+        writeControl    timeStep;
+        writeInterval   100;          
+    }
+}
+
+
+
