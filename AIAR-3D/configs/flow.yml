@@ -1,0 +1,59 @@
+seed: 42
+model_name: "flow"
+mode: "train_flow"
+
+model:
+
+  grid_size: [100, 100, 300]
+  phy_size: [1, 1, 1]
+
+  channels: 5
+  
+  gat_heads: 4
+  gat_sigma: 0.3
+
+  in_dim: 384
+
+  emb_dim: 384
+  depth: 8
+  num_heads: 8
+  mlp_ratio: 2
+  
+  out_dim: 384
+
+
+dataset:
+  data_path: "data/flow3d_steady.npz"
+  downsample_factor: 1
+  batch_size: 16
+  test_size: 16
+  transform: "std"  
+
+lr:
+  init_value: 0.0
+  peak_value: 2.0e-4
+  min_value: 2.0e-5
+  warmup_steps: 20
+
+optim:
+  beta1: 0.9
+  beta2: 0.999
+  eps: 1.0e-8
+  weight_decay: 1.0e-5
+  clip_norm: 1.0
+
+training:
+  max_steps: 200
+  random_sensor: True
+  num_ode_steps: 50
+
+logging:
+  log_interval: 2
+
+sensor:
+  batch_size: 16
+  n_epochs: 20
+  lr: 0.1
+  sensor_numer: 80
+  noise_level: 0.2
+  num_ode_steps: 50

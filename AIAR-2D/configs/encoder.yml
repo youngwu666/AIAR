@@ -1,0 +1,59 @@
+
+seed: 42
+model_name: "ED"
+mode: "train_encoder"
+
+model:
+  encoder:
+    patch_size: [6, 10]
+    grid_size: [282, 850]
+    phy_size: [1, 1]
+
+    emb_dim: 256
+    num_latents: 100
+    depth: 8
+    num_heads: 8
+    mlp_ratio: 2
+    layer_norm_eps: 1.0e-5
+    channel: 5
+
+  decoder:
+
+    fourier_freq: 10.0
+    dec_emb_dim: 256
+    dec_depth: 4
+    dec_num_heads: 8
+    mlp_ratio: 2
+    num_mlp_layers: 2
+    out_dim: 5
+    layer_norm_eps: 1.0e-5
+
+dataset:
+  data_path: "data/flow2d_steady.npz"
+  downsample_factor: 1
+  train_batch_size: 16
+  test_size: 8
+  transform: "std"
+
+lr:
+  init_value: 0.0
+  peak_value: 4.0e-4
+  min_value: 2.0e-4
+  decay_rate: 0.9
+  warmup_steps: 20
+
+optim:
+  beta1: 0.9
+  beta2: 0.999
+  eps: 1.0e-8
+  weight_decay: 1.0e-5
+  clip_norm: 1.0
+
+training:
+  max_steps: 200
+  random_resolution: True
+  use_pde: True
+  pde_r : 0.0001
+
+logging:
+  log_interval: 2
